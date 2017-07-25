@@ -62,7 +62,7 @@ public class GroupVerification {
         for(int i=1; i< RoomList.size()-1; i++){
             RoomlistItem1 = (MobileElement) RoomList.get(i);
             Rooms.put(RoomlistItem1.getText(),i);
-            System.out.println(RoomlistItem1.getText());
+
         }
         int Total=(RoomList.size())-2;
 
@@ -136,7 +136,7 @@ public class GroupVerification {
     public int nextRowNumber;
     public void storeResultsExcel (String excelStatus, String excelActualResult, String excelComments, String resultFileName, String ExcelExpectedResult, String resultAPIVersion, String resultSWVersion) throws IOException {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);

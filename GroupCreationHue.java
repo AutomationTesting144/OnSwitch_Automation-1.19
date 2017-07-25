@@ -6,6 +6,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.json.JSONException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,6 +35,7 @@ public class GroupCreationHue {
     public List RoomList;
     public MobileElement RoomlistItem1;
     public String RoomName;
+    Dimension size;
 
     public void GroupCreationHue (AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException  {
 
@@ -79,7 +81,29 @@ public class GroupCreationHue {
         TimeUnit.SECONDS.sleep(5);
 
         Runtime.getRuntime().exec("taskkill /F /FI \"WindowTitle eq OnSwitch\" /T");
-       // driver.pressKeyCode(187);
+        driver.pressKeyCode(187);
+        TimeUnit.SECONDS.sleep(2);
+
+        //Get the size of screen.
+
+
+        //Find swipe start and end point from screen's with and height.
+        //Find startx point which is at right side of screen.
+        int startx = (int) (size.width * 0.70);
+        //Find endx point which is at left side of screen.
+        int endx = (int) (size.width * 0.30);
+        //Find vertical point where you wants to swipe. It is in middle of screen height.
+        int starty = size.height / 2;
+
+        //Swipe from Right to Left.
+        driver.swipe(startx, starty, endx, starty, 3000);
+        Thread.sleep(2000);
+
+        driver.swipe(startx, starty, endx, starty, 3000);
+        Thread.sleep(2000);
+
+        driver.swipe(startx, starty, endx, starty, 3000);
+        Thread.sleep(2000);
 
 
         //Opening OnSwitch App
@@ -113,18 +137,18 @@ public class GroupCreationHue {
         {
 
             Status = "0";
-            ActualResult = "New Room: " + RoomName + " is not created in OnSwitch";
-            Comments = "FAIL: No Room is created";
-            ExpectedResult = "New Room: " + RoomName + " should be created in OnSwitch";
+            ActualResult = "New Room: " + RoomName + " is created by Hue app is not reflected in OnSwitch also";
+            Comments = "FAIL: Room is created in Hue app but not created in On Switch";
+            ExpectedResult = "New Room: " + RoomName + " should be created by Hue app and should be reflected in OnSwitch also";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
 
         }
         else
         {
             Status = "1";
-            ActualResult = "New Room: " + RoomName + " is created in OnSwitch";
+            ActualResult = "New Room: " + RoomName + " is created by Hue app is reflected in OnSwitch also";
             Comments = "NA";
-            ExpectedResult = "New Room: " + RoomName + " should be created in OnSwitch";
+            ExpectedResult = "New Room: " + RoomName + " should be created by Hue app and should be reflected in OnSwitch also";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
 
         }
@@ -140,7 +164,7 @@ public class GroupCreationHue {
             ,String resultAPIVersion, String resultSWVersion) throws IOException {
 
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);

@@ -21,40 +21,33 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 
 /**
- * Created by 310287808 on 7/20/2017.
+ * Created by 310287808 on 7/21/2017.
  */
 
-public class LightRenameHue {
-
-    MobileElement listItem;
-    public int lightCounter=0;
+public class LightChangeInGroupOnSwitch {
+    public String Status;
+    public String Comments;
+    public String ActualResult;
+    public String ExpectedResult;
     public String IPAddress = "192.168.86.21/api";
     public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
     public String HueBridgeParameterType = "lights/27";
     public String HueBridgeParameterTypeGroup = "groups/2";
     public String lightStatusReturned;
     public String finalURL;
-    public String ActualResult;
-    public String ExpectedResult;
-    public String Status;
-    public String Comments;
-    public String lightName;
-    public String newString1;
-    public String LightNameBefore;
-    public String LightNameAfter;
+    public String finalURL1;
     Dimension size;
+    public String newString1;
+    public String lightName;
 
-    public void LightRenameHue (AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException  {
+    public void LightChangeInGroupOnSwitch(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
 
         driver.navigate().back();
-
         HttpURLConnection connection;
 
         //Checking whether the group light is ON/OFF
@@ -96,35 +89,32 @@ public class LightRenameHue {
             TimeUnit.SECONDS.sleep(5);
 
         }
-        //Opening Hue applictaion
-        driver.findElement(By.xpath("//android.widget.TextView[@bounds='[24,1380][216,1572]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Clicking on settings button
-        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[1026,184][1074,232]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Selecting light setup
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[0,552][152,680]']")).click();
-        //Choosing light to remane
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[1080,292][1200,412]']")).click();
+        //Opening OnSwitch App
+        driver.findElement(By.xpath("//android.widget.TextView[@text='OnSwitch']")).click();
+        TimeUnit.SECONDS.sleep(10);
 
-        //editing the name
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).click();
-        LightNameBefore=driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).getText();
-        //Clearing the old name
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).clear();
-        TimeUnit.SECONDS.sleep(2);
-        //Entering new name
-        Random rand = new Random();
-        int  n = rand.nextInt() + 1;
-        LightNameAfter = String.valueOf(n);
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).sendKeys(LightNameAfter);
+        //Go to the groups tab.
+        driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
         TimeUnit.SECONDS.sleep(5);
-        driver.hideKeyboard();
 
-        //Going back from the application
-        driver.findElement(By.id("com.philips.lighting.hue2:id/details_device_icon")).click();
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[16,48][128,160]']")).click();
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[16,48][128,160]']")).click();
+        //clicking on Edit button
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_edit")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Clicking on group to add light
+        driver.findElement(By.xpath("//*[@text='Edit' and ./following-sibling::*[@text='Bedroom']]")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Selecting the Light to add in group
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Saving the group name
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_save")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //going back from the application
+        driver.navigate().back();
         driver.navigate().back();
         Runtime.getRuntime().exec("taskkill /F /FI \"WindowTitle eq OnSwitch\" /T");
         driver.pressKeyCode(187);
@@ -168,25 +158,23 @@ public class LightRenameHue {
         driver.navigate().back();
         driver.navigate().back();
 
-        //getting the status of  group from API
-        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
-        URL urlstatus = new URL(finalURL);
+        //getting the status of light from API
+        finalURL1 = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
+        URL urlstatus = new URL(finalURL1);
         connection = (HttpURLConnection) urlstatus.openConnection();
         connection.connect();
         InputStream streamStatus = connection.getInputStream();
         BufferedReader readerStatus = new BufferedReader(new InputStreamReader(streamStatus));
-        StringBuffer brStatus = new StringBuffer();
+        StringBuffer brStatus1 = new StringBuffer();
         String lineStatus = " ";
         while ((lineStatus = readerStatus.readLine()) != null) {
-            brStatus.append(lineStatus);
+            brStatus1.append(lineStatus);
         }
-
-        String outputStatus = brStatus.toString();
+        String output = brStatus1.toString();
 
         BridgeIndividualLightStateONOFF lOnOff = new BridgeIndividualLightStateONOFF();
-        lightStatusReturned = lOnOff.stateONorOFF(outputStatus);
-
-        JSONObject jsonObject2 = new JSONObject(outputStatus);
+        lightStatusReturned = lOnOff.stateONorOFF(output);
+        JSONObject jsonObject2 = new JSONObject(output);
         Object ob2 = jsonObject2.get("state");
         newString1 = ob2.toString();
         Object lightNameObject = jsonObject2.get("name");
@@ -195,52 +183,26 @@ public class LightRenameHue {
         br.append(lightName);
         br.append("\n");
 
-        if (lightStatusReturned == "true")
+        if (lightStatusReturned.equals("true"))
 
         {
             Status = "1";
-            ActualResult = "Light " + LightNameBefore + " is renamed to: "+ LightNameAfter+ " in Hue and controlled by OnSwitch";
+            ActualResult = "Light " + lightName + " is added in the group and controlled by OnSwitch";
             Comments = "NA";
-            ExpectedResult= "Light " + LightNameBefore + " should be renamed to: "+ LightNameAfter+ " in Hue app and should be controlled by OnSwitch";
+            ExpectedResult= "Light " + lightName + " should be added in the group and should be controlled by OnSwitch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
         } else {
             Status = "0";
-            ActualResult = "Light " + LightNameBefore + " is renamed to: "+ LightNameAfter+ " in Hue but is not controlled by OnSwitch";
-            Comments = "Light Status of " + LightNameBefore + " is : " + newString1;
-            ExpectedResult= "Light " + LightNameBefore + " should be renamed to: "+ LightNameAfter+ " in Hue app and should be controlled by OnSwitch";
+            ActualResult = "Light " + lightName + " is added in the group and controlled by OnSwitch";
+            Comments = "Light Status of " + lightName + " is : " + newString1;
+            ExpectedResult= "Light " + lightName + " should be added in the group and should be controlled by OnSwitch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
         }
 
-        //Opening Hue application
-        driver.findElement(By.xpath("//android.widget.TextView[@bounds='[24,1380][216,1572]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Clicking on settings button
-        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[1026,184][1074,232]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Selecting light setup
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[0,552][152,680]']")).click();
-        //Choosing light to remane
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[1080,292][1200,412]']")).click();
 
-        //editing the name
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).click();
-        //Clearing the old name
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).clear();
-        TimeUnit.SECONDS.sleep(2);
-        //Entering new name
-        driver.findElement(By.id("com.philips.lighting.hue2:id/form_field_text")).sendKeys(LightNameBefore);
-        TimeUnit.SECONDS.sleep(5);
-        driver.hideKeyboard();
+        storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult, APIVersion, SWVersion);
 
-        //Going back from the application
-        driver.findElement(By.id("com.philips.lighting.hue2:id/details_device_icon")).click();
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[16,48][128,160]']")).click();
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[16,48][128,160]']")).click();
-        driver.navigate().back();
-
-        storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult,APIVersion,SWVersion);
     }
-
     public String CurrentdateTime;
     public int nextRowNumber;
     public void storeResultsExcel (String excelStatus, String excelActualResult, String excelComments, String resultFileName, String ExcelExpectedResult, String resultAPIVersion, String resultSWVersion) throws IOException {
@@ -258,7 +220,7 @@ public class LightRenameHue {
         r2c1.setCellValue(CurrentdateTime);
 
         HSSFCell r2c2 = row2.createCell((short) 1);
-        r2c2.setCellValue("22");
+        r2c2.setCellValue("24");
 
         HSSFCell r2c3 = row2.createCell((short) 2);
         r2c3.setCellValue(excelStatus);
@@ -279,7 +241,6 @@ public class LightRenameHue {
         FileOutputStream out =new FileOutputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         workbook.write(out);
         out.close();
-
 
     }
 

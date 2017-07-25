@@ -119,9 +119,6 @@ public class GroupOff {
         String newStringStatus = obStatus.toString();
         JSONObject jsonObject1Status = new JSONObject(newStringStatus);
         Object ob1Status = jsonObject1Status.get("all_on");
-        System.out.println(ob1Status);
-
-
 
         if(ob1Status.toString().equals("false"))
         {
@@ -148,7 +145,7 @@ public class GroupOff {
     public int nextRowNumber;
     public void storeResultsExcel (String excelStatus, String excelActualResult, String excelComments, String resultFileName, String ExcelExpectedResult, String resultAPIVersion, String resultSWVersion) throws IOException {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);

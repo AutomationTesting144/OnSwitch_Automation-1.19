@@ -152,17 +152,17 @@ public class GroupRenameHue {
         if (lightCounter == 0)
         {
             Status = "0";
-            ActualResult = "Room: " +DeletedRoom+" is not renamed to : "+ RoomName ;
-            Comments = "FAIL: Room is not renamed";
-            ExpectedResult = "Room: " +DeletedRoom+" should be renamed to : "+ RoomName ;
+            ActualResult = "Room: " +DeletedRoom+" is renamed to : "+ RoomName+" in Hue app but not in On Switch";
+            Comments = "FAIL: Room is not renamed in OnSwitch.";
+            ExpectedResult = "Room: " +DeletedRoom+" should be renamed to : "+ RoomName+" in Hue app and in On Switch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
         }
         else
         {
             Status = "1";
-            ActualResult = "Room: " +DeletedRoom+" is renamed to : "+ RoomName ;
+            ActualResult = "Room: " +DeletedRoom+" is renamed to : "+ RoomName+" in Hue app and in On Switch";
             Comments = "NA";
-            ExpectedResult = "Room: " +DeletedRoom+" should be renamed to : "+ RoomName ;
+            ExpectedResult = "Room: " +DeletedRoom+" should be renamed to : "+ RoomName+" in Hue app and in On Switch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
         }
         driver.navigate().back();
@@ -176,7 +176,7 @@ public class GroupRenameHue {
             ,String resultAPIVersion, String resultSWVersion) throws IOException {
 
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);

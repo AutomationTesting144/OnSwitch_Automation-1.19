@@ -135,18 +135,18 @@ public class GroupDeletionHue {
         if (lightCounter == 0)
         {
             Status = "1";
-            ActualResult = "Room: " +DeletedToBeRoom+" is deleted";
+            ActualResult = "Room: " +DeletedToBeRoom+" is deleted from Hue app and also from On Switch";
             Comments = "NA";
-            ExpectedResult = "Room: " +DeletedToBeRoom+" should be deleted";
+            ExpectedResult = "Room: " +DeletedToBeRoom+" should be deleted from Hue app and also from On Switch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
 
         }
         else
         {
             Status = "0";
-            ActualResult = "Room: " +DeletedToBeRoom+" is not deleted";
-            Comments = "FAIL: Room is not deleted";
-            ExpectedResult = "Room: " +DeletedToBeRoom+" should be deleted";
+            ActualResult = "Room: " +DeletedToBeRoom+" is deleted from Hue app but not from On Switch";
+            Comments = "FAIL: Room is not deleted from On Switch but deleted from Hue app";
+            ExpectedResult = "Room: " +DeletedToBeRoom+" should be deleted from Hue app and also from On Switch";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
         }
 
@@ -161,7 +161,7 @@ public class GroupDeletionHue {
             ,String resultAPIVersion, String resultSWVersion) throws IOException {
 
         java.util.Calendar cal = java.util.Calendar.getInstance();
-        java.text.SimpleDateFormat sdf  = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        java.text.SimpleDateFormat sdf  = new java.text.SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);

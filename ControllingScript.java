@@ -141,10 +141,18 @@ public class ControllingScript {
         SWVersion swv = new SWVersion();
         SWVersion = swv.getSWVersion();
 
+//        BridgeAuthenticationFirstTime Bridge=new BridgeAuthenticationFirstTime();
+//        Bridge.BridgeAuthenticationFirstTime(driver, resultFileName,APIVersion,SWVersion);
 
-//        BridgeSearch Bridge=new BridgeSearch();
-//        Bridge.BridgeSearch(driver, resultFileName,APIVersion,SWVersion);
+        NewWhiteList  WhiteList=new NewWhiteList();
+        WhiteList.NewWhiteList(driver,resultFileName,APIVersion,SWVersion);
 
+        WhiteListFriendlyName  FriendlyName=new WhiteListFriendlyName();
+        FriendlyName.WhiteListFriendlyName(driver,resultFileName,APIVersion,SWVersion);
+
+        BridgeConnectionAfterWhiteListDeletion AfterWhiteListDeletion=new BridgeConnectionAfterWhiteListDeletion();
+        AfterWhiteListDeletion.BridgeConnectionAfterWhiteListDeletion(driver, resultFileName,APIVersion,SWVersion);
+//
 //        GroupVerification verification=new GroupVerification();
 //        verification.GroupVerification(driver, resultFileName,APIVersion,SWVersion);
 //
@@ -156,29 +164,44 @@ public class ControllingScript {
 //
 //        GroupBrightness Bright=new GroupBrightness();
 //        Bright.GroupBrightness(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        GroupCreationHue CreateHue=new GroupCreationHue();
 //        CreateHue.GroupCreationHue(driver, resultFileName,APIVersion,SWVersion);
-//
+
 //        GroupRenameHue RenameHue=new GroupRenameHue();
 //        RenameHue.GroupRenameHue(driver, resultFileName,APIVersion,SWVersion);
 //
 //        GroupDeletionHue DeleteHue=new GroupDeletionHue();
 //        DeleteHue.GroupDeletionHue(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        GroupCreationOnSwitch CreationOnSwitch=new GroupCreationOnSwitch();
 //        CreationOnSwitch.GroupCreationOnSwitch(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        GroupRenameOnSwitch RenameOnSwitch=new GroupRenameOnSwitch();
 //        RenameOnSwitch.GroupRenameOnSwitch(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        GroupDeletionOnSwitch DeletionOnSwitch=new GroupDeletionOnSwitch();
 //        DeletionOnSwitch.GroupDeletionOnSwitch(driver, resultFileName,APIVersion,SWVersion);
+//
+//        LightAdditionHue AdditionHue=new LightAdditionHue();
+//        AdditionHue.LightAdditionHue(driver, resultFileName,APIVersion,SWVersion);
+//
+//        LightRenameHue RenameHue1=new LightRenameHue();
+//        RenameHue1.LightRenameHue(driver, resultFileName,APIVersion,SWVersion);
+//
+//        LightDeletionHue DeletionHue=new LightDeletionHue();
+//        DeletionHue.LightDeletionHue(driver, resultFileName,APIVersion,SWVersion);
+//
+//        LightChangeInGroupOnSwitch  LightChangeInGroup=new LightChangeInGroupOnSwitch();
+//        LightChangeInGroup.LightChangeInGroupOnSwitch(driver, resultFileName,APIVersion,SWVersion);
 
-        LightAdditionHue AdditionHue=new LightAdditionHue();
-        AdditionHue.LightAdditionHue(driver, resultFileName,APIVersion,SWVersion);
+//        ScenesOnSwitch  Scenes=new ScenesOnSwitch();
+//        Scenes.ScenesOnSwitch(driver, resultFileName,APIVersion,SWVersion);
 
-
+//        WhiteListDeletion  Deletion=new WhiteListDeletion();
+//        Deletion.WhiteListDeletion(driver);
+//
+//
 
 
 

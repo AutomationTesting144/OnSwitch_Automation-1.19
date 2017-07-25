@@ -104,15 +104,15 @@ public class GroupDeletionOnSwitch {
 
         if (notToTalkCounter == 0) {
             Status = "1";
-            ActualResult = "Room: "+LastRoom+" is Deleted from OnSwitch and Hue application";
+            ActualResult = "Room: "+LastRoom+" is Deleted from OnSwitch and also from Hue application";
             Comments = "NA";
-            ExpectedResult = "Room: "+LastRoom+" should be Deleted from OnSwitch and Hue application";
+            ExpectedResult = "Room: "+LastRoom+" should be Deleted from OnSwitch and Hue application both";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
         } else {
             Status = "0";
-            ActualResult = "Room: "+LastRoom+" is not Deleted from OnSwitch and Hue application";
+            ActualResult = "Room: "+LastRoom+" is Deleted from OnSwitch but not reflected by Hue application";
             Comments = "Fail:Room name is not Deleted/ Room is not created in Hue app because Room type is not ROOM";
-            ExpectedResult = "Room: "+LastRoom+" should be Deleted from OnSwitch and Hue application";
+            ExpectedResult = "Room: "+LastRoom+" should be Deleted from OnSwitch and Hue application both";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
         }
         driver.navigate().back();
@@ -124,7 +124,7 @@ public class GroupDeletionOnSwitch {
     public int nextRowNumber;
     public void storeResultsExcel (String excelStatus, String excelActualResult, String excelComments, String resultFileName, String ExcelExpectedResult, String resultAPIVersion, String resultSWVersion) throws IOException {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS aa");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         CurrentdateTime = sdf.format(cal.getTime());
         FileInputStream fsIP = new FileInputStream(new File("C:\\Users\\310287808\\AndroidStudioProjects\\AnkitasTrial\\" + resultFileName));
         HSSFWorkbook workbook = new HSSFWorkbook(fsIP);
