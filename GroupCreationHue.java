@@ -88,7 +88,7 @@ public class GroupCreationHue {
 
 
         //Find swipe start and end point from screen's with and height.
-        //Find startx point which is at right side of screen.
+        size = driver.manage().window().getSize();
         int startx = (int) (size.width * 0.70);
         //Find endx point which is at left side of screen.
         int endx = (int) (size.width * 0.30);

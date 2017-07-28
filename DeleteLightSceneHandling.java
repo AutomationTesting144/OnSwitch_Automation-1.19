@@ -16,7 +16,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -26,10 +25,10 @@ import java.util.concurrent.TimeUnit;
 import io.appium.java_client.android.AndroidDriver;
 
 /**
- * Created by 310287808 on 7/21/2017.
+ * Created by 310287808 on 7/27/2017.
  */
 
-public class LightChangeInGroupOnSwitch {
+public class DeleteLightSceneHandling {
     public String Status;
     public String Comments;
     public String ActualResult;
@@ -40,55 +39,52 @@ public class LightChangeInGroupOnSwitch {
     public String HueBridgeParameterTypeGroup = "groups/2";
     public String lightStatusReturned;
     public String finalURL;
-    public String finalURL1;
     Dimension size;
-    public String newString1;
-    public String lightName;
 
-    public void LightChangeInGroupOnSwitch(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
+    public void DeleteLightSceneHandling(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
 
         driver.navigate().back();
         HttpURLConnection connection;
 
         //Checking whether the group light is ON/OFF
-        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterTypeGroup;
-        URL url = new URL(finalURL);
-        connection = (HttpURLConnection) url.openConnection();
-        connection.connect();
-        InputStream stream = connection.getInputStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuffer br = new StringBuffer();
-        String line = " ";
-        while ((line = reader.readLine()) != null) {
-            br.append(line);
-        }
-
-        String output1 = br.toString();
-        JSONObject jsonObject = new JSONObject(output1);
-
-        Object ob = jsonObject.get("state");
-        String newString = ob.toString();
-        JSONObject jsonObject1 = new JSONObject(newString);
-        Object ob1 = jsonObject1.get("all_on");
-
-        //If the lights in the group are already ON then turn them off
-        if (ob1.toString()=="true")
-        {
-            URL url1 = new URL("http://192.168.86.21/api/FgwTGpJneMTWtudw0G1VMBPKXbLZCk5Q8Trwuved/groups/2/action");
-            String content = "{"+"\"on\""+":"+"false"+"}";
-            HttpURLConnection httpCon = (HttpURLConnection) url1.openConnection();
-            httpCon.setDoOutput(true);
-            httpCon.setRequestMethod("PUT");
-            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
-            out.write(content);
-            out.close();
-            httpCon.getInputStream();
-            System.out.println(httpCon.getResponseCode());
-            TimeUnit.SECONDS.sleep(5);
-            System.out.println("Lights are switched off");
-            TimeUnit.SECONDS.sleep(5);
-
-        }
+//        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterTypeGroup;
+//        URL url = new URL(finalURL);
+//        connection = (HttpURLConnection) url.openConnection();
+//        connection.connect();
+//        InputStream stream = connection.getInputStream();
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+//        StringBuffer br = new StringBuffer();
+//        String line = " ";
+//        while ((line = reader.readLine()) != null) {
+//            br.append(line);
+//        }
+//
+//        String output1 = br.toString();
+//        JSONObject jsonObject = new JSONObject(output1);
+//
+//        Object ob = jsonObject.get("state");
+//        String newString = ob.toString();
+//        JSONObject jsonObject1 = new JSONObject(newString);
+//        Object ob1 = jsonObject1.get("all_on");
+//
+//        //If the lights in the group are already ON then turn them off
+//        if (ob1.toString()=="true")
+//        {
+//            URL url1 = new URL("http://192.168.86.21/api/FgwTGpJneMTWtudw0G1VMBPKXbLZCk5Q8Trwuved/groups/2/action");
+//            String content = "{"+"\"on\""+":"+"false"+"}";
+//            HttpURLConnection httpCon = (HttpURLConnection) url1.openConnection();
+//            httpCon.setDoOutput(true);
+//            httpCon.setRequestMethod("PUT");
+//            OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+//            out.write(content);
+//            out.close();
+//            httpCon.getInputStream();
+//            System.out.println(httpCon.getResponseCode());
+//            TimeUnit.SECONDS.sleep(5);
+//            System.out.println("Lights are switched off");
+//            TimeUnit.SECONDS.sleep(5);
+//
+//        }
         //Opening OnSwitch App
         driver.findElement(By.xpath("//android.widget.TextView[@text='OnSwitch']")).click();
         TimeUnit.SECONDS.sleep(10);
@@ -105,7 +101,7 @@ public class LightChangeInGroupOnSwitch {
         driver.findElement(By.xpath("//*[@text='Edit' and ./following-sibling::*[@text='Bedroom']]")).click();
         TimeUnit.SECONDS.sleep(5);
 
-        //Selecting the Light to add in group
+        //Selecting the Light to delete in group
         driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
         TimeUnit.SECONDS.sleep(5);
 
@@ -150,73 +146,95 @@ public class LightChangeInGroupOnSwitch {
         driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
         TimeUnit.SECONDS.sleep(5);
 
-        //Clicking on the toggle switch for bedroom to turn it ON
-        driver.findElement(By.xpath("//android.widget.Button[@bounds='[1039,466][1199,562]']")).click();
+        //Clicking on the bedroom
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Bedroom']")).click();
         TimeUnit.SECONDS.sleep(2);
 
+        //Clicking on Albums
+        driver.findElement(By.xpath("//android.widget.TextView[@text='ALBUMS']")).click();
+        TimeUnit.SECONDS.sleep(2);
 
-        //getting the status of light from API
-        finalURL1 = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
-        URL urlstatus = new URL(finalURL1);
-        connection = (HttpURLConnection) urlstatus.openConnection();
-        connection.connect();
-        InputStream streamStatus = connection.getInputStream();
-        BufferedReader readerStatus = new BufferedReader(new InputStreamReader(streamStatus));
-        StringBuffer brStatus1 = new StringBuffer();
-        String lineStatus = " ";
-        while ((lineStatus = readerStatus.readLine()) != null) {
-            brStatus1.append(lineStatus);
-        }
-        String output = brStatus1.toString();
+        //Swiping for different scenes
+        size = driver.manage().window().getSize();
 
-        BridgeIndividualLightStateONOFF lOnOff = new BridgeIndividualLightStateONOFF();
-        lightStatusReturned = lOnOff.stateONorOFF(output);
-        JSONObject jsonObject2 = new JSONObject(output);
-        Object ob2 = jsonObject2.get("state");
-        newString1 = ob2.toString();
-        Object lightNameObject = jsonObject2.get("name");
-        lightName = lightNameObject.toString();
+        //Find swipe start and end point from screen's with and height.
+        //Find starty point which is at bottom side of screen.
+        int starty1 = (int) (size.height * 0.80);
+        //Find endy point which is at top side of screen.
+        int endy = (int) (size.height * 0.20);
+        //Find horizontal point where you wants to swipe. It is in middle of screen width.
+        int startx1 = size.width / 2;
 
-        br.append(lightName);
-        br.append("\n");
+        //Swipe from Bottom to Top.
+        driver.swipe(startx, starty1, startx1, endy, 3000);
+        driver.swipe(startx, starty1, startx1, endy, 3000);
+        Thread.sleep(2000);
 
-        if (lightStatusReturned.equals("true"))
+        //Choosing the scene for the group
+        driver.findElement(By.xpath("//android.widget.ImageView[@content-desc='Scene Album']")).click();
 
-        {
-            Status = "1";
-            ActualResult = "Light " + lightName + " is added in the group and controlled by OnSwitch";
-            Comments = "NA";
-            ExpectedResult= "Light " + lightName + " should be added in the group and should be controlled by OnSwitch";
-            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
-        } else {
-            Status = "0";
-            ActualResult = "Light " + lightName + " is added in the group and controlled by OnSwitch";
-            Comments = "Light Status of " + lightName + " is : " + newString1;
-            ExpectedResult= "Light " + lightName + " should be added in the group and should be controlled by OnSwitch";
-            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
-        }
-
-        //clicking on Edit button
-        driver.findElement(By.id("com.getonswitch.onswitch:id/action_edit")).click();
-        TimeUnit.SECONDS.sleep(5);
-
-        //Clicking on group to add light
-        driver.findElement(By.xpath("//*[@text='Edit' and ./following-sibling::*[@text='Bedroom']]")).click();
-        TimeUnit.SECONDS.sleep(5);
-
-        //Selecting the Light to add in group
-        driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
-        TimeUnit.SECONDS.sleep(5);
-
-        //Saving the group name
-        driver.findElement(By.id("com.getonswitch.onswitch:id/action_save")).click();
-        TimeUnit.SECONDS.sleep(5);
-
-
+        //Choosing Green color
+        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[99,999][301,1332]']")).click();
 
         //Going back from the application
         driver.navigate().back();
         driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+
+
+        //getting the status of  group from API
+
+        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
+        URL url1 = new URL(finalURL);
+        connection = (HttpURLConnection) url1.openConnection();
+        connection.connect();
+
+        InputStream stream1 = connection.getInputStream();
+
+        BufferedReader reader1 = new BufferedReader(new InputStreamReader(stream1));
+
+        StringBuffer br1 = new StringBuffer();
+
+        String line1 = " ";
+        while ((line1 = reader1.readLine()) != null) {
+            br1.append(line1);
+        }
+        String output = br1.toString();
+
+        JSONObject jsonObjectLight = new JSONObject(output);
+        //System.out.println(jsonObject.toString());
+
+        Object obLight =  jsonObjectLight.get("name");
+        String newStringLight = obLight.toString();
+
+        ColorChangeSingleStatus SingleStatus = new ColorChangeSingleStatus();
+        lightStatusReturned = SingleStatus.ColorChangeSingleStatus(output);
+
+        String Xval=lightStatusReturned.substring(1,5);
+        String Yval=lightStatusReturned.substring(8,12);
+        System.out.println(Xval);
+        System.out.println(Yval);
+        String Xgreen="0.42";
+        String Ygreen="0.50";
+
+        boolean finalResult=(Xval.equals(Xgreen)) && (Yval.equals(Ygreen));
+        if (finalResult==false){
+            Status = "1";
+            ActualResult = "light: "+newStringLight+ " deleted from the group and scene is not applied";
+            Comments = "NA";
+            ExpectedResult=  "light: "+newStringLight+ " should be deleted from the group and scene should not be applied";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
+        }else
+        {
+            Status = "0";
+            ActualResult = "light: "+newStringLight+ " is not deleted from the group and scene is applied";
+            Comments = "FAIL: Light "+newStringLight+ " is failed to be deleted from the group";
+            ExpectedResult=  "light: "+newStringLight+ " should be deleted from the group and scene should not be applied";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
+        }
+
 
         storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult, APIVersion, SWVersion);
 
@@ -238,7 +256,7 @@ public class LightChangeInGroupOnSwitch {
         r2c1.setCellValue(CurrentdateTime);
 
         HSSFCell r2c2 = row2.createCell((short) 1);
-        r2c2.setCellValue("24");
+        r2c2.setCellValue("28");
 
         HSSFCell r2c3 = row2.createCell((short) 2);
         r2c3.setCellValue(excelStatus);

@@ -37,7 +37,7 @@ public class LightRenameHue {
     public int lightCounter=0;
     public String IPAddress = "192.168.86.21/api";
     public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
-    public String HueBridgeParameterType = "lights/27";
+    public String HueBridgeParameterType = "lights/31";
     public String HueBridgeParameterTypeGroup = "groups/2";
     public String lightStatusReturned;
     public String finalURL;

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,25 +22,28 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
 import io.appium.java_client.android.AndroidDriver;
 
 /**
- * Created by 310287808 on 7/24/2017.
+ * Created by 310287808 on 7/26/2017.
  */
 
-public class ScenesOnSwitch {
+public class ScenesOnMultipleRooms {
     public String IPAddress = "192.168.86.21/api";
     public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
     public String HueBridgeParameterType = "groups/2";
+    public String HueBridgeParameterTypeLivingrRoom= "groups/1";
     public String finalURL;
     public String lightStatusReturned;
+    public String lightStatusReturnedGreen;
     public String Status;
     public String Comments;
     public String ActualResult;
     public String ExpectedResult;
     Dimension size;
 
-    public void ScenesOnSwitch(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
+    public void ScenesOnMultipleRooms(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
 
         driver.navigate().back();
 
@@ -59,8 +63,6 @@ public class ScenesOnSwitch {
 
         String output1 = br.toString();
         JSONObject jsonObject = new JSONObject(output1);
-
-        System.out.print("output 1: "+output1);
 
         Object ob = jsonObject.get("state");
         String newString = ob.toString();
@@ -83,6 +85,8 @@ public class ScenesOnSwitch {
             TimeUnit.SECONDS.sleep(5);
             System.out.println("Lights are switched on");
             TimeUnit.SECONDS.sleep(5);
+
+
         }
         //Opening OnSwitch App
         System.out.println("Clicking application");
@@ -123,13 +127,6 @@ public class ScenesOnSwitch {
         //Choosing RED color
         driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[99,586][301,919]']")).click();
         TimeUnit.SECONDS.sleep(10);
-        //Going back from the application
-        driver.navigate().back();
-        driver.navigate().back();
-        driver.navigate().back();
-        driver.navigate().back();
-        driver.navigate().back();
-
 
         //getting the status of  group from API
 
@@ -149,11 +146,16 @@ public class ScenesOnSwitch {
             br1.append(line1);
         }
         String output = br1.toString();
-        System.out.print("Output is: "+output);
+
+        JSONObject jsonObjectBedroom = new JSONObject(output);
+
+        Object obBedroom = jsonObjectBedroom.get("name");
+        String newStringBedroom = obBedroom.toString();
+        System.out.println("Name1: "+newStringBedroom);
 
         ColorChangeAllStatus SingleStatus = new ColorChangeAllStatus();
         lightStatusReturned = SingleStatus.ColorChangeAllStatus(output);
-        System.out.print(lightStatusReturned+"\n");
+        System.out.println("output for red:"+lightStatusReturned);
 
         String Xval=lightStatusReturned.substring(1,5);
         String Yval=lightStatusReturned.substring(7,11);
@@ -162,22 +164,81 @@ public class ScenesOnSwitch {
         String Xred="0.67";
         String Yred="0.32";
 
-        boolean finalResult=(Xval.equals(Xred)) && (Yval.equals(Yred));
-        if (finalResult==true){
+        boolean BedRoom=(Xval.equals(Xred)) && (Yval.equals(Yred));
+
+// *********************switching to Living room for applying scenes**************
+
+        //Go to the groups tab.
+        driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Clicking on the bedroom
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Living room']")).click();
+        TimeUnit.SECONDS.sleep(2);
+
+        //Choosing Green color
+        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[99,999][301,1332]']")).click();
+        TimeUnit.SECONDS.sleep(10);
+
+        //Fetching results from API
+
+        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterTypeLivingrRoom;
+        URL urlLiving = new URL(finalURL);
+        connection = (HttpURLConnection) urlLiving.openConnection();
+        connection.connect();
+
+        InputStream streamLiving = connection.getInputStream();
+
+        BufferedReader readerLiving = new BufferedReader(new InputStreamReader(streamLiving));
+
+        br = new StringBuffer();
+
+        String lineLiving = " ";
+        while ((lineLiving = readerLiving.readLine()) != null) {
+            br.append(lineLiving);
+        }
+        String outputLiving = br.toString();
+        JSONObject jsonObjectLiving = new JSONObject(outputLiving);
+
+        Object obLiving = jsonObjectLiving.get("name");
+        String newStringLiving = obLiving.toString();
+        System.out.println("Name2: "+newStringLiving);
+
+        ColorChangeAllStatus SingleStatusLiving = new ColorChangeAllStatus();
+        lightStatusReturnedGreen = SingleStatusLiving.ColorChangeAllStatus(outputLiving);
+        System.out.println("output for green:"+lightStatusReturnedGreen);
+        String XvalGreen=lightStatusReturnedGreen.substring(1,5);
+        String Yvalgreen=lightStatusReturnedGreen.substring(8,12);
+        System.out.println(XvalGreen);
+        System.out.println(Yvalgreen);
+        String Xgreen="0.42";
+        String Ygreen="0.50";
+        boolean LivingRoom=(XvalGreen.equals(Xgreen)) && (Yvalgreen.equals(Ygreen));
+        Boolean FinalResult= BedRoom==true && LivingRoom==true;
+        if (FinalResult==true){
             Status = "1";
-            ActualResult = "New scene is applied in the room by OnSwitch";
+            ActualResult = "New scenes are applied on following rooms: "+newStringBedroom+ " and" +newStringLiving;
             Comments = "NA";
             ExpectedResult= "New scene should be applied on the room";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
         }else
         {
             Status = "0";
-            ActualResult ="Scene is not applied for the room";
+            ActualResult ="Scene is not applied for the rooms: "+newStringBedroom+ " and" +newStringLiving;
             Comments = "FAIL:Application is failed to apply scenes";
-            ExpectedResult= "New scene should be applied on the room after selecting";
+            ExpectedResult= "New scene should be applied on the room";
             System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
         }
 
+
+        //Going back from the application
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
 
         storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult,APIVersion,SWVersion);
     }
@@ -200,7 +261,7 @@ public class ScenesOnSwitch {
         r2c1.setCellValue(CurrentdateTime);
 
         HSSFCell r2c2 = row2.createCell((short) 1);
-        r2c2.setCellValue("25");
+        r2c2.setCellValue("26");
 
         HSSFCell r2c3 = row2.createCell((short) 2);
         r2c3.setCellValue(excelStatus);

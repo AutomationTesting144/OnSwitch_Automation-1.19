@@ -144,15 +144,15 @@ public class ControllingScript {
 //        BridgeAuthenticationFirstTime Bridge=new BridgeAuthenticationFirstTime();
 //        Bridge.BridgeAuthenticationFirstTime(driver, resultFileName,APIVersion,SWVersion);
 
-        NewWhiteList  WhiteList=new NewWhiteList();
-        WhiteList.NewWhiteList(driver,resultFileName,APIVersion,SWVersion);
-
-        WhiteListFriendlyName  FriendlyName=new WhiteListFriendlyName();
-        FriendlyName.WhiteListFriendlyName(driver,resultFileName,APIVersion,SWVersion);
-
-        BridgeConnectionAfterWhiteListDeletion AfterWhiteListDeletion=new BridgeConnectionAfterWhiteListDeletion();
-        AfterWhiteListDeletion.BridgeConnectionAfterWhiteListDeletion(driver, resultFileName,APIVersion,SWVersion);
+//        NewWhiteList  WhiteList=new NewWhiteList();
+//        WhiteList.NewWhiteList(driver,resultFileName,APIVersion,SWVersion);
 //
+//        WhiteListFriendlyName  FriendlyName=new WhiteListFriendlyName();
+//        FriendlyName.WhiteListFriendlyName(driver,resultFileName,APIVersion,SWVersion);
+
+//        BridgeConnectionAfterWhiteListDeletion AfterWhiteListDeletion=new BridgeConnectionAfterWhiteListDeletion();
+//        AfterWhiteListDeletion.BridgeConnectionAfterWhiteListDeletion(driver, resultFileName,APIVersion,SWVersion);
+
 //        GroupVerification verification=new GroupVerification();
 //        verification.GroupVerification(driver, resultFileName,APIVersion,SWVersion);
 //
@@ -167,7 +167,7 @@ public class ControllingScript {
 //
 //        GroupCreationHue CreateHue=new GroupCreationHue();
 //        CreateHue.GroupCreationHue(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        GroupRenameHue RenameHue=new GroupRenameHue();
 //        RenameHue.GroupRenameHue(driver, resultFileName,APIVersion,SWVersion);
 //
@@ -194,13 +194,32 @@ public class ControllingScript {
 //
 //        LightChangeInGroupOnSwitch  LightChangeInGroup=new LightChangeInGroupOnSwitch();
 //        LightChangeInGroup.LightChangeInGroupOnSwitch(driver, resultFileName,APIVersion,SWVersion);
-
+//
 //        ScenesOnSwitch  Scenes=new ScenesOnSwitch();
 //        Scenes.ScenesOnSwitch(driver, resultFileName,APIVersion,SWVersion);
+//
+//        ScenesOnMultipleRooms  MultipleRooms=new ScenesOnMultipleRooms();
+//        MultipleRooms.ScenesOnMultipleRooms(driver, resultFileName,APIVersion,SWVersion);
+////
+//        AddLightSceneHandling  AddLightScene=new AddLightSceneHandling();
+//        AddLightScene.AddLightSceneHandling(driver, resultFileName,APIVersion,SWVersion);
+//
+//        DeleteLightSceneHandling  DeleteLightScene=new DeleteLightSceneHandling();
+//        DeleteLightScene.DeleteLightSceneHandling(driver, resultFileName,APIVersion,SWVersion);
+
+        BridgeSwitchingSameNetwork  SameNetwork=new BridgeSwitchingSameNetwork();
+        SameNetwork.BridgeSwitchingSameNetwork(driver, resultFileName,APIVersion,SWVersion);
+
+//        MultipleBridgeUserName  MultipleBridge=new MultipleBridgeUserName();
+//        MultipleBridge.MultipleBridgeUserName(driver, resultFileName,APIVersion,SWVersion);
+
 
 //        WhiteListDeletion  Deletion=new WhiteListDeletion();
 //        Deletion.WhiteListDeletion(driver);
-//
+
+
+
+////
 //
 
 

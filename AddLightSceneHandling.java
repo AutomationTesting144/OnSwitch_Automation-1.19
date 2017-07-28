@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,37 +21,31 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
-
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 
 /**
- * Created by 310287808 on 7/21/2017.
+ * Created by 310287808 on 7/26/2017.
  */
 
-public class LightDeletionHue {
-    MobileElement listItem;
-    public int lightCounter=0;
+public class AddLightSceneHandling {
+    public String Status;
+    public String Comments;
+    public String ActualResult;
+    public String ExpectedResult;
     public String IPAddress = "192.168.86.21/api";
     public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
     public String HueBridgeParameterType = "lights/31";
     public String HueBridgeParameterTypeGroup = "groups/2";
     public String lightStatusReturned;
     public String finalURL;
-    public String ActualResult;
-    public String ExpectedResult;
-    public String Status;
-    public String Comments;
-    public String lightName;
-    public String newString1;
-    public String LightNameBefore;
-    public String LightNameAfter;
+    public String finalURL1;
     Dimension size;
+    public String newString1;
+    public String lightName;
 
-    public void LightDeletionHue (AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException  {
+    public void AddLightSceneHandling(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
 
         driver.navigate().back();
-
         HttpURLConnection connection;
 
         //Checking whether the group light is ON/OFF
@@ -94,26 +87,32 @@ public class LightDeletionHue {
             TimeUnit.SECONDS.sleep(5);
 
         }
-        //Opening Hue application
-        driver.findElement(By.xpath("//android.widget.TextView[@bounds='[24,1380][216,1572]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Clicking on settings button
-        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[1026,184][1074,232]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Selecting Room setup
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[0,408][152,536]']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Clicking on bedroom icon to add the lights
-        driver.findElement(By.id("com.philips.lighting.hue2:id/list_item_left_icon")).click();
-        TimeUnit.SECONDS.sleep(2);
-
-        driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
-        TimeUnit.SECONDS.sleep(2);
-        //Saving the light in Bedroom
-        driver.findElement(By.id("com.philips.lighting.hue2:id/save")).click();
+        //Opening OnSwitch App
+        driver.findElement(By.xpath("//android.widget.TextView[@text='OnSwitch']")).click();
         TimeUnit.SECONDS.sleep(10);
-        //Going back from the application
-        driver.findElement(By.xpath("//android.widget.ImageButton[@bounds='[16,48][128,160]']")).click();
+
+        //Go to the groups tab.
+        driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //clicking on Edit button
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_edit")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Clicking on group to add light
+        driver.findElement(By.xpath("//*[@text='Edit' and ./following-sibling::*[@text='Bedroom']]")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Selecting the Light to add in group
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Saving the group name
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_save")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //going back from the application
+        driver.navigate().back();
         driver.navigate().back();
         Runtime.getRuntime().exec("taskkill /F /FI \"WindowTitle eq OnSwitch\" /T");
         driver.pressKeyCode(187);
@@ -149,59 +148,118 @@ public class LightDeletionHue {
         driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
         TimeUnit.SECONDS.sleep(5);
 
-        //Clicking on the toggle switch for bedroom to turn it ON
-        driver.findElement(By.xpath("//android.widget.Button[@bounds='[1039,466][1199,562]']")).click();
+        //Clicking on the bedroom
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Bedroom']")).click();
         TimeUnit.SECONDS.sleep(2);
 
+        //Clicking on Albums
+        driver.findElement(By.xpath("//android.widget.TextView[@text='ALBUMS']")).click();
+        TimeUnit.SECONDS.sleep(2);
+
+        //Swiping for different scenes
+        size = driver.manage().window().getSize();
+
+        //Find swipe start and end point from screen's with and height.
+        //Find starty point which is at bottom side of screen.
+        int starty1 = (int) (size.height * 0.80);
+        //Find endy point which is at top side of screen.
+        int endy = (int) (size.height * 0.20);
+        //Find horizontal point where you wants to swipe. It is in middle of screen width.
+        int startx1 = size.width / 2;
+
+        //Swipe from Bottom to Top.
+        driver.swipe(startx, starty1, startx1, endy, 3000);
+        driver.swipe(startx, starty1, startx1, endy, 3000);
+        Thread.sleep(2000);
+
+        //Choosing the scene for the group
+        driver.findElement(By.xpath("//android.widget.ImageView[@content-desc='Scene Album']")).click();
+
+        //Choosing RED color
+        driver.findElement(By.xpath("//android.widget.ImageView[@bounds='[99,586][301,919]']")).click();
+        TimeUnit.SECONDS.sleep(10);
+
+        //getting the status of  group from API
+
+        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
+        URL url1 = new URL(finalURL);
+        connection = (HttpURLConnection) url1.openConnection();
+        connection.connect();
+
+        InputStream stream1 = connection.getInputStream();
+
+        BufferedReader reader1 = new BufferedReader(new InputStreamReader(stream1));
+
+        StringBuffer br1 = new StringBuffer();
+
+        String line1 = " ";
+        while ((line1 = reader1.readLine()) != null) {
+            br1.append(line1);
+        }
+        String output = br1.toString();
+        System.out.print("Output1: "+output+"\n");
+
+        JSONObject jsonObjectLight = new JSONObject(output);
+        //System.out.println(jsonObject.toString());
+
+        Object obLight =  jsonObjectLight.get("name");
+        String newStringLight = obLight.toString();
+
+        ColorChangeSingleStatus SingleStatus = new ColorChangeSingleStatus();
+        lightStatusReturned = SingleStatus.ColorChangeSingleStatus(output);
+
+        String Xval=lightStatusReturned.substring(1,5);
+        String Yval=lightStatusReturned.substring(7,11);
+        System.out.println(Xval);
+        System.out.println(Yval);
+        String Xred="0.67";
+        String Yred="0.32";
+
+        boolean finalResult=(Xval.equals(Xred)) && (Yval.equals(Yred));
+        if (finalResult==true){
+            Status = "1";
+            ActualResult = "New light: "+newStringLight+ " added in the group and scenes is applied";
+            Comments = "NA";
+            ExpectedResult= "New light: "+newStringLight+ " should be added in the group and scenes should be applied";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
+        }else
+        {
+            Status = "0";
+            ActualResult = "New light: "+newStringLight+ " is not added in the group and scenes is not applied";
+            Comments = "FAIL: Light "+newStringLight+ " is failed to add in the group";
+            ExpectedResult= "New light: "+newStringLight+ " should be added in the group and scenes should be applied";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
+        }
+
+        //Go to the groups tab.
+        driver.findElement(By.xpath("//android.widget.TextView[@text='GROUPS']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //clicking on Edit button
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_edit")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Clicking on group to add light
+        driver.findElement(By.xpath("//*[@text='Edit' and ./following-sibling::*[@text='Bedroom']]")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Selecting the Light to add in group
+        driver.findElement(By.xpath("//android.widget.TextView[@text='Hue color lamp 57']")).click();
+        TimeUnit.SECONDS.sleep(5);
+
+        //Saving the group name
+        driver.findElement(By.id("com.getonswitch.onswitch:id/action_save")).click();
+        TimeUnit.SECONDS.sleep(5);
         //Going back from the application
         driver.navigate().back();
         driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
+        driver.navigate().back();
 
-        //getting the status of  group from API
-        finalURL = "http://" + IPAddress + "/" + HueUserName + "/" + HueBridgeParameterType;
-        URL urlstatus = new URL(finalURL);
-        connection = (HttpURLConnection) urlstatus.openConnection();
-        connection.connect();
-        InputStream streamStatus = connection.getInputStream();
-        BufferedReader readerStatus = new BufferedReader(new InputStreamReader(streamStatus));
-        StringBuffer brStatus = new StringBuffer();
-        String lineStatus = " ";
-        while ((lineStatus = readerStatus.readLine()) != null) {
-            brStatus.append(lineStatus);
-        }
+        storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult, APIVersion, SWVersion);
 
-        String outputStatus = brStatus.toString();
-
-        BridgeIndividualLightStateONOFF lOnOff = new BridgeIndividualLightStateONOFF();
-        lightStatusReturned = lOnOff.stateONorOFF(outputStatus);
-
-        Object ob2 = jsonObject.get("state");
-        newString1 = ob2.toString();
-        Object lightNameObject = jsonObject.get("name");
-        lightName = lightNameObject.toString();
-
-        br.append(lightName);
-        br.append("\n");
-
-        if (lightStatusReturned == "false")
-
-        {
-            Status = "1";
-            ActualResult = "Light " + lightName + " is deleted from Hue and is not controlled by OnSwitch";
-            Comments = "NA";
-            ExpectedResult="Light " + lightName + " should be deleted from Hue and should not controlled by OnSwitch";
-            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
-        } else {
-            Status = "0";
-            ActualResult = "Light " + lightName + " is deleted from Hue but is controlled by OnSwitch";
-            Comments = "Light Status of " + lightName + " is : " + newString1;
-            ExpectedResult="Light " + lightName + " should be deleted from Hue and should not controlled by OnSwitch";
-            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments+ "\n"+"Actual Result: "+ActualResult+ "\n"+"Expected Result: "+ExpectedResult);
-        }
-
-        storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult,APIVersion,SWVersion);
     }
-
     public String CurrentdateTime;
     public int nextRowNumber;
     public void storeResultsExcel (String excelStatus, String excelActualResult, String excelComments, String resultFileName, String ExcelExpectedResult, String resultAPIVersion, String resultSWVersion) throws IOException {
@@ -219,7 +277,7 @@ public class LightDeletionHue {
         r2c1.setCellValue(CurrentdateTime);
 
         HSSFCell r2c2 = row2.createCell((short) 1);
-        r2c2.setCellValue("23");
+        r2c2.setCellValue("27");
 
         HSSFCell r2c3 = row2.createCell((short) 2);
         r2c3.setCellValue(excelStatus);
@@ -241,7 +299,5 @@ public class LightDeletionHue {
         workbook.write(out);
         out.close();
 
-
     }
-
 }

@@ -6,7 +6,6 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openqa.selenium.By;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,26 +14,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 import io.appium.java_client.android.AndroidDriver;
 
 /**
- * Created by 310287808 on 7/25/2017.
+ * Created by 310287808 on 7/27/2017.
  */
 
-public class BridgeConnectionAfterWhiteListDeletion {
+public class MultipleBridgeUserName {
     public String whiteListString;
+    public String whiteListStringSecond;
     public String [] parts ;
     public int counter=0;
-    public String iftttSubString;
     public String WLname;
+    public String WLnameSecond;
     public String url;
     public String Status;
     public String Comments;
@@ -42,7 +40,7 @@ public class BridgeConnectionAfterWhiteListDeletion {
     public String ExpectedResult;
     public boolean ob3;
 
-    public void BridgeConnectionAfterWhiteListDeletion(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws JSONException, IOException, InterruptedException {
+    public void MultipleBridgeUserName(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws JSONException, IOException, InterruptedException {
         driver.navigate().back();
         HttpURLConnection connection;
         URL url = new URL("http://192.168.86.21/api/FgwTGpJneMTWtudw0G1VMBPKXbLZCk5Q8Trwuved/config");
@@ -67,46 +65,62 @@ public class BridgeConnectionAfterWhiteListDeletion {
         parts = whiteListString.split("}");
         for(int i =0;i<parts.length;i++){
             if(parts[i].contains("OnSwitch")){
-                    counter++;
-                    WLname = parts[i].substring(2,42);
-                    URL url1 = new URL("http://192.168.86.21/api/6ziFpmJs-YJYyUVbN9sbe0FzRujC8AoUJ0NL2D-A/config/whitelist/"+WLname);
-                    HttpURLConnection httpCon = (HttpURLConnection) url1.openConnection();
-                    httpCon.setDoOutput(true);
-                    httpCon.setRequestMethod("DELETE");
-                    OutputStreamWriter out = new OutputStreamWriter(
-                            httpCon.getOutputStream());
-                    System.out.println(httpCon.getResponseCode());
-                    System.out.println(httpCon.getResponseMessage());
-                    out.close();
-//                }
-
+                counter++;
+                WLname = parts[i].substring(2,42);URL url1 = new URL("http://192.168.86.21/api/6ziFpmJs-YJYyUVbN9sbe0FzRujC8AoUJ0NL2D-A/config/whitelist/"+WLname);
+                System.out.println("WhiteList name: "+WLname);
             }
         }
-        driver.navigate().back();
-        //Opening OnSwitch App
-        driver.findElement(By.xpath("//android.widget.TextView[@text='OnSwitch']")).click();
-        TimeUnit.SECONDS.sleep(5);
 
-        //looking for pushlink
-        ob3= driver.findElement(By.xpath("//android.widget.TextView[@text='Please push the link button on the smart bridge.']")).isDisplayed();
+        URL urlSecond = new URL("http://192.168.86.23/api/YDU6nYRzaMmKqqzS5lmdb3s9roIfo7R5AZbq9JY4/config");
+        connection = (HttpURLConnection) urlSecond.openConnection();
+        connection.connect();
+        InputStream streamSecond = connection.getInputStream();
+        BufferedReader readerSecond = new BufferedReader(new InputStreamReader(streamSecond));
+        StringBuffer brSecond = new StringBuffer();
+        String lineSecond = " ";
+        while ((lineSecond = readerSecond.readLine()) != null) {
+            brSecond.append(lineSecond);
+        }
+        String outputSecond = brSecond.toString();
 
-        Boolean result=(counter==0 && ob3==true);
+        JSONObject jsonObjectSecond = new JSONObject(outputSecond);
+        Object whitelistObjectSecond = jsonObjectSecond.get("whitelist");
+        whiteListStringSecond = whitelistObjectSecond.toString();
 
-        if(result==true) {
-
-                Status = "0";
-                ActualResult = "There is no white list created today to be deleted";
-                Comments = "Fail: White list is not available to delete";
-                ExpectedResult = "Application should ask user to press bridge pushlink after deleting whitelist";
-                System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
-
-            } else {
-                Status = "1";
-                ActualResult = "Application is asking user to press bridge pushlink after deleting whitelist";
-                Comments = "NA";
-                ExpectedResult = "Application should ask user to press bridge pushlink after deleting whitelist";
-                System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
+        parts = whiteListStringSecond.split("}");
+        for(int i =0;i<parts.length;i++){
+            if(parts[i].contains("OnSwitch")){
+                counter++;
+                WLnameSecond = parts[i].substring(2,42);
             }
+        }
+        System.out.println("WhiteList Second name: "+WLnameSecond);
+        driver.navigate().back();
+
+        //System.out.print("First WL null or not :"+WLname!="NULL" +"\n");
+        //System.out.print("Second WL null or not :" +WLnameSecond!= "NULL" +"\n");
+
+        Boolean Final= WLname!="NULL" && WLnameSecond!= "NULL";
+//        System.out.println(Final);
+//        //System.out.print("Final result is null or not :"+Final);
+//        System.out.println("Is she mad?:"+Final);
+//        //System.exit(0);
+
+
+        if(Final==true) {
+            Status = "1";
+            ActualResult = "Different User names are created on different bridges: \n 1. Bridge IP: 192.168.86.21 and User Name: "+WLname +"\n 2. Bridge IP: 192.168.86.23 and User Name: "+WLnameSecond;
+            Comments = "NA";
+            ExpectedResult = "Different username should be created for different bridges for the same application";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
+
+        } else {
+            Status = "0";
+            ActualResult = "Different User names are not created on different bridges";
+            Comments = "Fail: 1. Bridge IP: 192.168.86.21 and User Name: "+WLname +"\n2. Bridge IP: 192.168.86.23 and User Name:"+WLnameSecond;
+            ExpectedResult = "Different username should be created for different bridges for the same application";
+            System.out.println("Result: " + Status + "\n" + "Comment: " + Comments + "\n" + "Actual Result: " + ActualResult + "\n" + "Expected Result: " + ExpectedResult);
+        }
 
 
         storeResultsExcel(Status, ActualResult, Comments, fileName, ExpectedResult,APIVersion,SWVersion);
@@ -130,7 +144,7 @@ public class BridgeConnectionAfterWhiteListDeletion {
         r2c1.setCellValue(CurrentdateTime);
 
         HSSFCell r2c2 = row2.createCell((short)1);
-        r2c2.setCellValue("4");
+        r2c2.setCellValue("9");
 
         HSSFCell r2c3 = row2.createCell((short)2);
         r2c3.setCellValue(excelStatus);
@@ -156,4 +170,3 @@ public class BridgeConnectionAfterWhiteListDeletion {
 
     }
 }
-

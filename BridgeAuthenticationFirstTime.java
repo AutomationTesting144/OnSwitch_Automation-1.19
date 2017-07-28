@@ -22,10 +22,6 @@ import io.appium.java_client.android.AndroidDriver;
  */
 
 public class BridgeAuthenticationFirstTime {
-    public String IPAddress = "192.168.86.21/api";
-    public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
-    public String HueBridgeParameterType = "groups/0";
-    public String finalURL;
     public String ActualResult;
     public String Comments;
     public String ExpectedResult;
@@ -37,6 +33,18 @@ public class BridgeAuthenticationFirstTime {
         //Opening OnSwitch App
         driver.findElement(By.xpath("//android.widget.TextView[@text='OnSwitch']")).click();
         TimeUnit.SECONDS.sleep(5);
+
+//        //Go to the Info tab.
+//        driver.findElement(By.xpath("//android.widget.TextView[@text='INFO']")).click();
+//        TimeUnit.SECONDS.sleep(5);
+//
+//        //Clicking on Find Bridge button
+//        driver.findElement(By.id("com.getonswitch.onswitch:id/hueFindBridgeButton")).click();
+//        TimeUnit.SECONDS.sleep(15);
+//
+//        //Choosing IP 1
+//        driver.findElement(By.xpath("//android.widget.TextView[@text='192.168.86.21']")).click();
+//        TimeUnit.SECONDS.sleep(5);
 
         //looking for pushlink
         ob3= driver.findElement(By.xpath("//android.widget.TextView[@text='Please push the link button on the smart bridge.']")).isDisplayed();
