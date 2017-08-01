@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 
 /**
@@ -31,8 +30,6 @@ import io.appium.java_client.android.AndroidDriver;
  */
 
 public class LightDeletionHue {
-    MobileElement listItem;
-    public int lightCounter=0;
     public String IPAddress = "192.168.86.21/api";
     public String HueUserName = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
     public String HueBridgeParameterType = "lights/31";
@@ -45,8 +42,6 @@ public class LightDeletionHue {
     public String Comments;
     public String lightName;
     public String newString1;
-    public String LightNameBefore;
-    public String LightNameAfter;
     Dimension size;
 
     public void LightDeletionHue (AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException  {

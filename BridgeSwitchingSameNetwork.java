@@ -30,10 +30,10 @@ import io.appium.java_client.android.AndroidDriver;
  */
 
 public class BridgeSwitchingSameNetwork {
-    public String IPAddress1 = "192.168.86.21/api";
-    public String HueUserName1 = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
-    public String IPAddress2 = "192.168.86.23/api";
-    public String HueUserName2 = "YDU6nYRzaMmKqqzS5lmdb3s9roIfo7R5AZbq9JY4";
+    public String IPAddress1 = "192.168.86.23/api";
+    public String HueUserName1 = "YDU6nYRzaMmKqqzS5lmdb3s9roIfo7R5AZbq9JY4";
+    public String IPAddress2 = "192.168.86.21/api";
+    public String HueUserName2 = "i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo";
     public String HueBridgeParameterType = "groups/2";
     public String finalURL;
     public String Status;
@@ -71,7 +71,7 @@ public class BridgeSwitchingSameNetwork {
         //If the lights in the group are already ON then turn them off
         if (ob1.toString()=="true")
         {
-            URL url1 = new URL("http://192.168.86.21/api/FgwTGpJneMTWtudw0G1VMBPKXbLZCk5Q8Trwuved/groups/2/action");
+            URL url1 = new URL("http://192.168.86.23/api/YDU6nYRzaMmKqqzS5lmdb3s9roIfo7R5AZbq9JY4/groups/2/action");
             String content = "{"+"\"on\""+":"+"false"+"}";
             HttpURLConnection httpCon = (HttpURLConnection) url1.openConnection();
             httpCon.setDoOutput(true);
@@ -112,7 +112,7 @@ public class BridgeSwitchingSameNetwork {
         //If the lights in the group are already ON then turn them off
         if (ob3.toString()=="true")
         {
-            URL url1 = new URL("http://192.168.86.23/api/YDU6nYRzaMmKqqzS5lmdb3s9roIfo7R5AZbq9JY4/groups/2/action");
+            URL url1 = new URL("http://192.168.86.21/api/i5ZxyqYoq6dmpjFXwKxw3ovCWLvF9arQdcBx8oLo/groups/2/action");
             String content = "{"+"\"on\""+":"+"false"+"}";
             HttpURLConnection httpCon = (HttpURLConnection) url1.openConnection();
             httpCon.setDoOutput(true);
@@ -141,7 +141,7 @@ public class BridgeSwitchingSameNetwork {
         TimeUnit.SECONDS.sleep(15);
 
         //Choosing IP 1
-        driver.findElement(By.xpath("//android.widget.TextView[@text='192.168.86.21']")).click();
+        driver.findElement(By.xpath("//android.widget.TextView[@text='192.168.86.23']")).click();
         TimeUnit.SECONDS.sleep(5);
 
         //Go to the Group tab.
@@ -222,7 +222,7 @@ public class BridgeSwitchingSameNetwork {
         TimeUnit.SECONDS.sleep(15);
 
         //Choosing IP 1
-        driver.findElement(By.xpath("//android.widget.TextView[@text='192.168.86.23']")).click();
+        driver.findElement(By.xpath("//android.widget.TextView[@text='192.168.86.21']")).click();
         TimeUnit.SECONDS.sleep(5);
 
         //Go to the Group tab.
@@ -234,6 +234,8 @@ public class BridgeSwitchingSameNetwork {
         TimeUnit.SECONDS.sleep(2);
 
         //Going back from the application
+        driver.navigate().back();
+        driver.navigate().back();
         driver.navigate().back();
         driver.navigate().back();
 

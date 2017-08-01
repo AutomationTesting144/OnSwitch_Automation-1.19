@@ -38,10 +38,8 @@ public class AddLightSceneHandling {
     public String HueBridgeParameterTypeGroup = "groups/2";
     public String lightStatusReturned;
     public String finalURL;
-    public String finalURL1;
     Dimension size;
-    public String newString1;
-    public String lightName;
+
 
     public void AddLightSceneHandling(AndroidDriver driver, String fileName, String APIVersion, String SWVersion) throws IOException, JSONException, InterruptedException {
 

@@ -150,8 +150,8 @@ public class ControllingScript {
 //        WhiteListFriendlyName  FriendlyName=new WhiteListFriendlyName();
 //        FriendlyName.WhiteListFriendlyName(driver,resultFileName,APIVersion,SWVersion);
 
-//        BridgeConnectionAfterWhiteListDeletion AfterWhiteListDeletion=new BridgeConnectionAfterWhiteListDeletion();
-//        AfterWhiteListDeletion.BridgeConnectionAfterWhiteListDeletion(driver, resultFileName,APIVersion,SWVersion);
+        BridgeConnectionAfterWhiteListDeletion AfterWhiteListDeletion=new BridgeConnectionAfterWhiteListDeletion();
+        AfterWhiteListDeletion.BridgeConnectionAfterWhiteListDeletion(driver, resultFileName,APIVersion,SWVersion);
 
 //        GroupVerification verification=new GroupVerification();
 //        verification.GroupVerification(driver, resultFileName,APIVersion,SWVersion);
@@ -207,8 +207,8 @@ public class ControllingScript {
 //        DeleteLightSceneHandling  DeleteLightScene=new DeleteLightSceneHandling();
 //        DeleteLightScene.DeleteLightSceneHandling(driver, resultFileName,APIVersion,SWVersion);
 
-        BridgeSwitchingSameNetwork  SameNetwork=new BridgeSwitchingSameNetwork();
-        SameNetwork.BridgeSwitchingSameNetwork(driver, resultFileName,APIVersion,SWVersion);
+//        BridgeSwitchingSameNetwork  SameNetwork=new BridgeSwitchingSameNetwork();
+//        SameNetwork.BridgeSwitchingSameNetwork(driver, resultFileName,APIVersion,SWVersion);
 
 //        MultipleBridgeUserName  MultipleBridge=new MultipleBridgeUserName();
 //        MultipleBridge.MultipleBridgeUserName(driver, resultFileName,APIVersion,SWVersion);
